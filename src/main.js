@@ -10,6 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
+import './permission'; // 权限控制
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(VueI18n);
@@ -46,6 +50,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     router,
+    store,
     i18n,
     render: h => h(App)
 }).$mount('#app')
