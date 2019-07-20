@@ -1,3 +1,7 @@
 export function getToken() {
-  window.localStorage.getItem('user_token');
+  return window.localStorage.getItem('user_token');
+}
+
+export function getMenus() {
+  return window.localStorage.getItem('user_menus');
 }

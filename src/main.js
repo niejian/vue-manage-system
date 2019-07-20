@@ -10,9 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
-import './permission'; // 权限控制
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+// import './permission'; // 权限控制
+import MenuUtils from '@/utils/menuUtils'
+import {storeLoginRouters} from '@/utils/utils'
+
 import store from './store'
 
 Vue.config.productionTip = false
@@ -22,14 +23,33 @@ Vue.use(ElementUI, {
 });
 Vue.prototype.$axios = axios;
 
+axios.defaults.baseURL = 'http://localhost:8088/';
+// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+
 const i18n = new VueI18n({
     locale: 'zh',
     messages
 })
 
+let menuRouters = localStorage.getItem('menuRouters');
+// let routers = [];
+menuRouters = JSON.parse(menuRouters);
+// MenuUtils(routers, menuRouters)
+// debugger
+// router.addRoutes(routers);
+// 从缓存中加载路由信息
+storeLoginRouters()
+
+// router.options.routes.push(routers)
+
+console.log(router.options.routes)
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     const role = localStorage.getItem('ms_username');
+    if (!menuRouters) {
+      next('/login');
+    }
+    
     if (!role && to.path !== '/login') {
         next('/login');
     } else if (to.meta.permission) {
@@ -52,5 +72,6 @@ new Vue({
     router,
     store,
     i18n,
+    axios,
     render: h => h(App)
 }).$mount('#app')

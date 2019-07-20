@@ -23,12 +23,19 @@
 </template>
 
 <script>
+    import MenuUtils from '@/utils/menuUtils'
+    import md5 from 'js-md5'
+    import { debuglog } from 'util';
+    import {storeLoginRouters} from '@/utils/utils'
+    var routers = []
     export default {
+      
         data: function(){
+          
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username: 'code4fun@qq.com',
+                    password: 'qq123123'
                 },
                 rules: {
                     username: [
@@ -43,9 +50,45 @@
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
+                  let menus = [];
+                  let token = '';
+                  let menuRouters = [];
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                      // 使用axios必须在success，error后加上bind(this)不然会报错
+                      this.$axios.post('http://localhost:8088/user/login', {
+                        email: this.ruleForm.username,
+                        password: md5(this.ruleForm.password)
+                      })
+                      .then(function (response) {
+                        debugger
+                        token = response.data.data.token;
+                        menus = response.data.data.menusTree;
+                        menuRouters = response.data.data.leafMenus;
+                        if(!token) {
+                          this.$message.error(response.data.responseMsg);
+                          this.$router.push('/login');
+                        }
+
+                        if(menus && menus.length > 0) {
+                          debugger
+                          // MenuUtils(routers, menuRouters)
+                          // 登陆请求
+                          window.localStorage.setItem('menuTrees',JSON.stringify(menus))
+                          window.localStorage.setItem('menuRouters',JSON.stringify(menuRouters))
+
+                          //console.log(menuRouters);
+                          // this.$router.addRoutes(routers);
+                          // 从缓存中加载路由信息
+                          storeLoginRouters()
+                          localStorage.setItem('ms_username',this.ruleForm.username);
+                          this.$router.push('/');
+                        }       
+
+                      }.bind(this))
+                      .catch(function (error) {
+                        console.log(error);
+                      }.bind(this));
+                      
                     } else {
                         console.log('error submit!!');
                         return false;
