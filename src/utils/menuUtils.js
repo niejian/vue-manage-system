@@ -10,21 +10,23 @@ function generaMenu(routers,data){
   data.forEach((item)=>{
     
     let menu = Object.assign({},item)
-    menu.name = menu.title;
+    // debugger
+    // component ===》 menuCode
+    menu.name = menu.component;
     let meta = {};
     meta.title = menu.name;
     let path = menu.path;
     let routerPath = path;
     menu.meta = meta;
-    debugger
+    
     if(path && path.lastIndexOf('/') > 0){
       let index = path.lastIndexOf('/');
       routerPath = path.substr(index);
       // menu.path = routerPath;
     }
     
-   
-    menu.component = lazyLoading(menu.path)
+    menu.component = lazyLoading('/common/Home')
+    //menu.component = lazyLoading(menu.path)
     menu.path = routerPath;
     
     // 非叶子节点
@@ -32,7 +34,7 @@ function generaMenu(routers,data){
       menu.children = []
       generaMenu(menu.children, item.children)
     }
-    console.log(menu)
+    // console.log(menu)
     routers.push(menu)
   })
 

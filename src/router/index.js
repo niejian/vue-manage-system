@@ -11,24 +11,48 @@ export default new Router({
         },
         {
           path: '/',
+          name: 'Home',
           component: resolve => require(['../components/common/Home.vue'], resolve),
           meta: { title: '自述文件' },
+          title: '自述文件',
           children: [
             {
                 path: '/dashboard',
                 component: resolve => require(['../components/page/Dashboard.vue'], resolve),
-                meta: { title: '系统首页' }
+                meta: { title: '系统首页' },
+                title: '系统首页'
             },
+            
             {
                 path: '/404',
                 component: resolve => require(['../components/page/404.vue'], resolve),
+                title: '404',
                 meta: { title: '404' }
             },
             {
                 path: '/403',
                 component: resolve => require(['../components/page/403.vue'], resolve),
+                title: '403',
                 meta: { title: '403' }
-            }
+            },
+            {
+                path: '/form',
+                component: resolve => require(['../components/page/form.vue'], resolve),
+                title: 'form',
+                meta: { title: 'form' }
+            },
+            {
+              path: '/forms',
+              component: resolve => require(['../components/page/form.vue'], resolve),
+              title: 'forms',
+              meta: { title: 'forms' }
+          },
+            {
+              path: '/Icon',
+              component: resolve => require(['../components/page/Icon.vue'], resolve),
+              title: '自定义图标',
+              meta: { title: '自定义图标' }
+          }
           ]
         },
         // {
@@ -128,7 +152,12 @@ export default new Router({
         // },
         {
             path: '/login',
+            title: '登陆',
             component: resolve => require(['../components/page/Login.vue'], resolve)
+        },
+        {
+          path: '*',
+          'redirect': '/404'
         }
     ]
 })

@@ -2,6 +2,7 @@
     <div class="wrapper">
         <v-head></v-head>
         <v-sidebar></v-sidebar>
+        
         <div class="content-box" :class="{'content-collapse':collapse}">
             <v-tags></v-tags>
             <div class="content">
@@ -20,6 +21,8 @@
     import vSidebar from './Sidebar.vue';
     import vTags from './Tags.vue';
     import bus from './bus';
+    import {storeLoginRouters} from '@/utils/utils'
+
     export default {
         data(){
             return {
@@ -31,6 +34,8 @@
             vHead, vSidebar, vTags
         },
         created(){
+            console.log("home")
+          
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })

@@ -70,7 +70,7 @@
                         }
 
                         if(menus && menus.length > 0) {
-                          debugger
+                          
                           // MenuUtils(routers, menuRouters)
                           // 登陆请求
                           window.localStorage.setItem('menuTrees',JSON.stringify(menus))
@@ -79,7 +79,7 @@
                           //console.log(menuRouters);
                           // this.$router.addRoutes(routers);
                           // 从缓存中加载路由信息
-                          storeLoginRouters()
+                          //storeLoginRouters()
                           localStorage.setItem('ms_username',this.ruleForm.username);
                           this.$router.push('/');
                         }       
